@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Registered Items - LostLink</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+
+        header {
+            background: #012e6b;
+            color: white;
+            padding: 18px 25px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+
+        .dashboard-btn {
+            background: white;
+            color: #012e6b;
+
+            border: none;
+
+            padding: 10px 16px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        .dashboard-btn:hover {
+            background: #f0f0f0;
+        }
+
+
+        .container {
+            max-width: 1200px;
+
+            margin: 30px auto;
+
+            padding: 0 20px;
+        }
+
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+
+        .page-title h2 {
+            margin: 0 0 8px;
+
+            font-size: 30px;
+
+            color: #012e6b;
+        }
+
+
+        .page-title p {
+            margin: 0;
+
+            color: #666;
+        }
+
+
+        #loading {
+            text-align: center;
+
+            padding: 30px;
+
+            font-size: 18px;
+
+            color: #666;
+        }
+
+
+        #error {
+            display: none;
+
+            background: #ffe5e5;
+
+            color: #b00020;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+        }
+
+
+        #itemsContainer {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(300px, 1fr)
+                );
+
+            gap: 20px;
+        }
+
+
+        .item-card {
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0, 0, 0, 0.08);
+        }
+
+
+        .item-card h3 {
+
+            margin-top: 0;
+
+            margin-bottom: 12px;
+
+            color: #012e6b;
+
+            font-size: 22px;
+        }
+
+
+        .item-info {
+
+            margin: 8px 0;
+
+            font-size: 15px;
+        }
+
+
+        .item-info strong {
+            color: #333;
+        }
+
+
+        .code {
+
+            display: inline-block;
+
+            background: #fff3e8;
+
+            color: #f37c23;
+
+            padding: 6px 10px;
+
+            border-radius: 6px;
+
+            font-weight: bold;
+
+            margin-bottom: 15px;
+        }
+
+
+        .status {
+
+            display: inline-block;
+
+            margin-top: 8px;
+
+            padding: 6px 10px;
+
+            border-radius: 6px;
+
+            background: #e7f7e7;
+
+            color: #087a08;
+
+            font-weight: bold;
+
+            font-size: 13px;
+        }
+
+
+        .qr-section {
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #ddd;
+        }
+
+
+        .qr-section img {
+
+            width: 180px;
+
+            height: 180px;
+
+            object-fit: contain;
+        }
+
+
+        .qr-title {
+
+            font-weight: bold;
+
+            margin-bottom: 10px;
+
+            color: #333;
+        }
+
+
+        .buttons {
+
+            display: flex;
+
+            gap: 10px;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            margin-top: 15px;
+        }
+
+
+        .btn {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+            border: none;
+
+            padding: 10px 14px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        .view-btn {
+
+            background: #012e6b;
+
+            color: white;
+        }
+
+
+        .download-btn {
+
+            background: #f37c23;
+
+            color: white;
+        }
+
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+
+        #noItems {
+
+            display: none;
+
+            text-align: center;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            color: #666;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>LostLink</h1>
+
+    <button
+        class="dashboard-btn"
+        id="dashboardButton"
+    >
+        Dashboard
+    </button>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="page-title">
+
+        <h2>
+            Registered Items
+        </h2>
+
+        <p>
+            All items registered in the LostLink system.
+        </p>
+
+    </div>
+
+
+    <div id="error"></div>
+
+
+    <div id="loading">
+        Loading registered items...
+    </div>
+
+
+    <div id="noItems">
+        No registered items found.
+    </div>
+
+
+    <div id="itemsContainer"></div>
+
+
+</div>
+
+
+<script>
+
+"use strict";
+
+
+/* -------------------------------------------------------
+   DASHBOARD BUTTON
+------------------------------------------------------- */
+
+document
+    .getElementById(
+        "dashboardButton"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            window.location.href = "/";
+
+        }
+    );
+
+
+/* -------------------------------------------------------
+   HTML ESCAPE
+------------------------------------------------------- */
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* -------------------------------------------------------
+   LOAD ITEMS
+------------------------------------------------------- */
+
+async function loadRegisteredItems() {
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+
+    const container =
+        document.getElementById(
+            "itemsContainer"
+        );
+
+
+    const noItems =
+        document.getElementById(
+            "noItems"
+        );
+
+
+    const error =
+        document.getElementById(
+            "error"
+        );
+
+
+    loading.style.display =
+        "block";
+
+
+    noItems.style.display =
+        "none";
+
+
+    error.style.display =
+        "none";
+
+
+    container.innerHTML =
+        "";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/registered-items-data"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Server returned HTTP " +
+                response.status
+            );
+
+        }
+
+
+        const items =
+            await response.json();
+
+
+        loading.style.display =
+            "none";
+
+
+        if (
+            !Array.isArray(items) ||
+            items.length === 0
+        ) {
+
+            noItems.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        items.forEach(
+            function(item) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "item-card";
+
+
+                const qrUrl =
+                    "/data/qr_codes/" +
+                    encodeURIComponent(
+                        item.code
+                    ) +
+                    ".png";
+
+
+                const itemUrl =
+                    "/item/" +
+                    encodeURIComponent(
+                        item.code
+                    );
+
+
+                card.innerHTML = `
+
+                    <h3>
+                        ${escapeHTML(
+                            item.name
+                        )}
+                    </h3>
+
+
+                    <div class="code">
+
+                        ${escapeHTML(
+                            item.code
+                        )}
+
+                    </div>
+
+
+                    <div class="item-info">
+
+                        <strong>
+                            Category:
+                        </strong>
+
+                        ${escapeHTML(
+                            item.category ||
+                            "Not specified"
+                        )}
+
+                    </div>
+
+
+                    <div class="item-info">
+
+                        <strong>
+                            Color:
+                        </strong>
+
+                        ${escapeHTML(
+                            item.color ||
+                            "Not specified"
+                        )}
+
+                    </div>
+
+
+                    <div class="item-info">
+
+                        <strong>
+                            Brand:
+                        </strong>
+
+                        ${escapeHTML(
+                            item.brand ||
+                            "Not specified"
+                        )}
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="status">
+
+                            ${escapeHTML(
+                                item.status ||
+                                "REGISTERED"
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="qr-section">
+
+                        <div class="qr-title">
+
+                            LostLink QR Code
+
+                        </div>
+
+
+                        <img
+
+                            src="${qrUrl}"
+
+                            alt="QR Code for ${escapeHTML(
+                                item.code
+                            )}"
+
+                            onerror="
+                                this.style.display='none';
+                                this.parentElement.insertAdjacentHTML(
+                                    'beforeend',
+                                    '<p style=&quot;color:red;&quot;>QR image not found</p>'
+                                );
+                            "
+                        >
+
+
+                        <div class="buttons">
+
+                            <a
+
+                                class="btn view-btn"
+
+                                href="${itemUrl}"
+
+                                target="_blank"
+                            >
+
+                                View Item
+
+                            </a>
+
+
+                            <a
+
+                                class="btn download-btn"
+
+                                href="${qrUrl}"
+
+                                download="${escapeHTML(
+                                    item.code
+                                )}.png"
+                            >
+
+                                Download QR
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+    } catch (err) {
+
+        loading.style.display =
+            "none";
+
+
+        error.style.display =
+            "block";
+
+
+        error.textContent =
+            "Unable to load registered items: " +
+            err.message;
+
+
+        console.error(
+            "Registered items error:",
+            err
+        );
+
+    }
+
+}
+
+
+/* -------------------------------------------------------
+   START
+------------------------------------------------------- */
+
+loadRegisteredItems();
+
+</script>
+
+
+</body>
+
+</html>
