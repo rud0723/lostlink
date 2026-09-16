@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>LostLink - Report Item</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f7fb;
+
+            color: #222;
+        }
+
+
+        header {
+
+            background: linear-gradient(
+                135deg,
+                #4f46e5,
+                #7c3aed
+            );
+
+            color: white;
+
+            padding: 22px;
+        }
+
+
+        header h1 {
+
+            margin: 0 0 12px 0;
+        }
+
+
+        nav a {
+
+            color: white;
+
+            text-decoration: none;
+
+            margin-right: 20px;
+
+            font-weight: bold;
+        }
+
+
+        main {
+
+            max-width: 800px;
+
+            margin: 30px auto;
+
+            padding: 0 15px;
+        }
+
+
+        .card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,0.08);
+        }
+
+
+        h2 {
+
+            margin-top: 0;
+        }
+
+
+        .section {
+
+            margin-top: 25px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #ddd;
+        }
+
+
+        label {
+
+            display: block;
+
+            font-weight: bold;
+
+            margin-top: 15px;
+
+            margin-bottom: 7px;
+        }
+
+
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+        }
+
+
+        textarea {
+
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+
+        .radio-group {
+
+            display: flex;
+
+            gap: 25px;
+
+            margin-top: 10px;
+        }
+
+
+        .radio-group label {
+
+            font-weight: normal;
+
+            margin: 0;
+        }
+
+
+        .radio-group input {
+
+            width: auto;
+
+            margin-right: 5px;
+        }
+
+
+        .row {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 15px;
+        }
+
+
+        .photo-box {
+
+            margin-top: 10px;
+
+            padding: 20px;
+
+            border: 2px dashed #aaa;
+
+            border-radius: 10px;
+
+            text-align: center;
+        }
+
+
+        .photo-box label {
+
+            margin-top: 0;
+        }
+
+
+        #photoPreview {
+
+            display: none;
+
+            max-width: 100%;
+
+            max-height: 300px;
+
+            margin: 20px auto 0;
+
+            border-radius: 10px;
+
+            object-fit: contain;
+        }
+
+
+        button {
+
+            width: 100%;
+
+            margin-top: 25px;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #4f46e5;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        button:hover {
+
+            background: #4338ca;
+        }
+
+
+        button:disabled {
+
+            background: #999;
+
+            cursor: not-allowed;
+        }
+
+
+        #message {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+        }
+
+
+        .success {
+
+            display: block !important;
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+
+        .error {
+
+            display: block !important;
+
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+
+        @media (max-width: 600px) {
+
+            .row {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .radio-group {
+
+                flex-direction: column;
+
+                gap: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>🔗 LostLink</h1>
+
+
+    <nav>
+
+        <a href="/">
+            Report Item
+        </a>
+
+        <a href="/reports-page">
+            View Reports
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<main>
+
+
+<div class="card">
+
+
+    <h2>
+        📋 Report Lost / Found Item
+    </h2>
+
+
+    <form
+        id="reportForm"
+        enctype="multipart/form-data"
+    >
+
+
+        <!-- ========================= -->
+        <!-- REPORT TYPE -->
+        <!-- ========================= -->
+
+        <div class="section">
+
+            <h3>
+                1️⃣ Report Type
+            </h3>
+
+
+            <div class="radio-group">
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="report_type"
+                        value="LOST"
+                        required
+                    >
+
+                    🔴 Lost
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="report_type"
+                        value="FOUND"
+                    >
+
+                    🟢 Found
+
+                </label>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ========================= -->
+        <!-- REPORTER INFORMATION -->
+        <!-- ========================= -->
+
+        <div class="section">
+
+            <h3>
+                2️⃣ Reporter Information
+            </h3>
+
+
+            <label>
+                Reporter Name
+            </label>
+
+
+            <input
+                type="text"
+                name="reporter_name"
+                placeholder="Enter your name"
+            >
+
+
+
+            <label>
+                Reporter Role
+            </label>
+
+
+            <select
+                name="reporter_role"
+                required
+            >
+
+                <option value="">
+                    Select role
+                </option>
+
+
+                <option value="Student">
+                    Student
+                </option>
+
+
+                <option value="Teacher">
+                    Teacher
+                </option>
+
+
+                <option value="Staff">
+                    Staff
+                </option>
+
+
+                <option value="Security">
+                    Security
+                </option>
+
+
+                <option value="Other">
+                    Other
+                </option>
+
+
+            </select>
+
+        </div>
+
+
+
+        <!-- ========================= -->
+        <!-- ITEM DETAILS -->
+        <!-- ========================= -->
+
+        <div class="section">
+
+            <h3>
+                3️⃣ Item Details
+            </h3>
+
+
+            <label>
+                Category
+            </label>
+
+
+            <input
+                type="text"
+                name="category"
+                placeholder="Example: Bag, Mobile, Wallet"
+            >
+
+
+
+            <div class="row">
+
+
+                <div>
+
+                    <label>
+                        Color
+                    </label>
+
+
+                    <input
+                        type="text"
+                        name="color"
+                        placeholder="Example: Blue"
+                    >
+
+                </div>
+
+
+
+                <div>
+
+                    <label>
+                        Brand
+                    </label>
+
+
+                    <input
+                        type="text"
+                        name="brand"
+                        placeholder="Example: Nike"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <label>
+                Description
+            </label>
+
+
+            <textarea
+                name="description"
+                placeholder="Describe the item in detail..."
+            ></textarea>
+
+
+        </div>
+
+
+
+        <!-- ========================= -->
+        <!-- LOCATION -->
+        <!-- ========================= -->
+
+        <div class="section">
+
+            <h3>
+                4️⃣ Location
+            </h3>
+
+
+            <label>
+                Location
+            </label>
+
+
+            <input
+                type="text"
+                name="location"
+                placeholder="Example: Hostel Block A"
+                required
+            >
+
+
+
+            <div class="row">
+
+
+                <div>
+
+                    <label>
+                        Latitude
+                    </label>
+
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="latitude"
+                        placeholder="Example: 22.7000"
+                    >
+
+                </div>
+
+
+
+                <div>
+
+                    <label>
+                        Longitude
+                    </label>
+
+
+                    <input
+                        type="number"
+                        step="any"
+                        name="longitude"
+                        placeholder="Example: 88.4500"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ========================= -->
+        <!-- DATE AND TIME -->
+        <!-- ========================= -->
+
+        <div class="section">
+
+            <h3>
+                5️⃣ Date & Time
+            </h3>
+
+
+            <label for="date_time">
+
+                When was the item
+                lost/found?
+
+            </label>
+
+
+            <input
+                type="datetime-local"
+                id="date_time"
+                name="date_time"
+                required
+            >
+
+
+        </div>
+
+
+
+        <!-- ========================= -->
+        <!-- PHOTO UPLOAD -->
+        <!-- ========================= -->
+
+        <div class="section">
+
+            <h3>
+                6️⃣ Photo Upload
+            </h3>
+
+
+            <div class="photo-box">
+
+
+                <label for="photo">
+
+                    📷 Select Item Photo
+
+                </label>
+
+
+                <input
+                    type="file"
+                    id="photo"
+                    name="photo"
+                    accept="image/*"
+                >
+
+
+                <!-- PHOTO PREVIEW -->
+
+                <img
+                    id="photoPreview"
+                    alt="Photo Preview"
+                >
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ========================= -->
+        <!-- SUBMIT -->
+        <!-- ========================= -->
+
+        <button
+            type="submit"
+            id="submitButton"
+        >
+
+            🚀 Submit Report
+
+        </button>
+
+
+
+        <!-- MESSAGE -->
+
+        <div id="message"></div>
+
+
+    </form>
+
+
+</div>
+
+
+</main>
+
+
+
+<script>
+
+
+/* =========================
+   GET ELEMENTS
+========================= */
+
+
+const form =
+    document.getElementById(
+        "reportForm"
+    );
+
+
+const photoInput =
+    document.getElementById(
+        "photo"
+    );
+
+
+const photoPreview =
+    document.getElementById(
+        "photoPreview"
+    );
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+const submitButton =
+    document.getElementById(
+        "submitButton"
+    );
+
+
+
+/* =========================
+   PHOTO PREVIEW
+========================= */
+
+
+photoInput.addEventListener(
+    "change",
+    function () {
+
+
+        const file =
+            this.files[0];
+
+
+        if (!file) {
+
+            photoPreview.style.display =
+                "none";
+
+            photoPreview.src = "";
+
+            return;
+        }
+
+
+
+        if (
+            !file.type.startsWith(
+                "image/"
+            )
+        ) {
+
+            alert(
+                "Please select an image file."
+            );
+
+
+            this.value = "";
+
+
+            photoPreview.style.display =
+                "none";
+
+
+            return;
+        }
+
+
+
+        const reader =
+            new FileReader();
+
+
+
+        reader.onload =
+            function(event) {
+
+
+                photoPreview.src =
+                    event.target.result;
+
+
+                photoPreview.style.display =
+                    "block";
+
+            };
+
+
+
+        reader.readAsDataURL(file);
+
+
+    }
+);
+
+
+
+/* =========================
+   FORM SUBMISSION
+========================= */
+
+
+form.addEventListener(
+    "submit",
+    async function(event) {
+
+
+        event.preventDefault();
+
+
+
+        message.style.display =
+            "none";
+
+
+        message.textContent =
+            "";
+
+
+
+        submitButton.disabled =
+            true;
+
+
+        submitButton.textContent =
+            "⏳ Submitting...";
+
+
+
+        const formData =
+            new FormData(form);
+
+
+
+        try {
+
+
+            const response =
+                await fetch(
+                    "/report",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+
+            const result =
+                await response.json();
+
+
+
+            if (
+                response.ok &&
+                result.status ===
+                "success"
+            ) {
+
+
+                message.textContent =
+                    "✅ Report submitted successfully! Report ID: "
+                    + result.report_id;
+
+
+                message.className =
+                    "success";
+
+
+                form.reset();
+
+
+                photoPreview.src =
+                    "";
+
+
+                photoPreview.style.display =
+                    "none";
+
+
+            }
+
+            else {
+
+
+                message.textContent =
+                    "❌ "
+                    +
+                    (
+                        result.message
+                        ||
+                        "Failed to submit report."
+                    );
+
+
+                message.className =
+                    "error";
+
+            }
+
+
+        }
+
+        catch(error) {
+
+
+            console.error(error);
+
+
+            message.textContent =
+                "❌ Cannot connect to LostLink server.";
+
+
+            message.className =
+                "error";
+
+
+        }
+
+
+
+        submitButton.disabled =
+            false;
+
+
+        submitButton.textContent =
+            "🚀 Submit Report";
+
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>
